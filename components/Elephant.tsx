@@ -15,7 +15,7 @@ const SKIN = "#7d8392";
 const SKIN_D = "#636a78";
 const IVORY = "#f3e8c8";
 const GOLD = "#e3b04b";
-const RED = "#a51f2d";
+const RED0 = "#a51f2d";
 
 function skinTexture() {
   if (typeof document === "undefined") return null;
@@ -49,7 +49,9 @@ function skinTexture() {
 
 const TRUNK = Array.from({ length: 10 }, (_, i) => ({ r: 0.215 - i * 0.017, len: 0.19 }));
 
-export function Kandula() {
+export function Kandula({ cloth = RED0, pace }: { cloth?: string; pace?: React.MutableRefObject<number> }) {
+  const RED = cloth;
+  const clk = useRef(0);
   const bump = useMemo(() => skinTexture(), []);
   const skin = useMemo(
     () => new THREE.MeshStandardMaterial({ color: SKIN, roughness: 0.93, bumpMap: bump ?? undefined, bumpScale: 2.4 }),
@@ -96,8 +98,10 @@ export function Kandula() {
     return [mk(-1), mk(1)];
   }, []);
 
-  useFrame(({ clock }) => {
-    const t = clock.elapsedTime;
+  useFrame((_, dt) => {
+    // own clock so the gait can speed up while the army marches
+    clk.current += Math.min(dt, 0.05) * (pace ? 0.4 + pace.current * 2.4 : 1);
+    const t = clk.current;
     const breath = Math.sin(t * 1.4);
     if (root.current) {
       root.current.position.y = Math.abs(Math.sin(t * 0.9)) * 0.018 + breath * 0.006;

@@ -6,6 +6,7 @@ import { useLang } from "@/lib/i18n";
 import { UI } from "@/lib/ui";
 import { STAGES } from "@/lib/journey";
 import { PLACES, PLACES_UI, RIVER_LABEL } from "@/lib/places";
+import { useMusic } from "@/lib/useMusic";
 import Reveal from "./Reveal";
 
 const Map3D = dynamic(() => import("./Map3D"), {
@@ -55,19 +56,20 @@ export default function JourneyMap() {
     setActive(Math.max(-1, Math.min(STAGES.length - 1, i)));
   }, []);
 
+  // each stage lingers as long as its scene needs: the ship's voyage and the marches take longer
   useEffect(() => {
     if (!playing) return;
-    const id = setInterval(() => {
-      setActive((a) => {
-        if (a >= STAGES.length - 1) {
-          setPlaying(false);
-          return a;
-        }
-        return a + 1;
-      });
-    }, 7000);
-    return () => clearInterval(id);
-  }, [playing]);
+    if (active >= STAGES.length - 1) {
+      setPlaying(false);
+      return;
+    }
+    const dwell = [13000, 8500, 7000, 10000, 9500, 9000, 9500, 10500, 8000][active + 1] ?? 8000;
+    const id = setTimeout(() => setActive((a) => Math.min(STAGES.length - 1, a + 1)), active < 0 ? 3500 : dwell);
+    return () => clearTimeout(id);
+  }, [playing, active]);
+
+  // the song plays while the journey plays
+  const music = useMusic("/audio/aloko-udapadi.mp3", playing && inView, 0.5);
 
   const stage = active >= 0 ? STAGES[active] : null;
 
@@ -103,6 +105,9 @@ export default function JourneyMap() {
             <button className="btn small ghost" onClick={() => { setPlaying(false); go(active + 1); }} disabled={active >= STAGES.length - 1}>
               {t(UI.map.next)} →
             </button>
+            <button className={`btn small ghost music ${music.on && !music.blocked ? "on" : ""}`} onClick={music.toggle} aria-pressed={music.on && !music.blocked}>
+              {music.blocked ? `♪ ${t(UI.map.musicTap)}` : music.on ? `♪ ${t(UI.map.musicOn)}` : `✕ ${t(UI.map.musicOff)}`}
+            </button>
           </div>
         </div>
 
@@ -119,6 +124,7 @@ export default function JourneyMap() {
                 <h3>{t(stage.title)}</h3>
                 <p className="place">📍 {t(stage.place)}</p>
                 <p>{t(stage.text)}</p>
+                {stage.id === "kulanganiya" && <p className="brothers-note">⚔ {t(PLACES_UI.brothers)}</p>}
                 {stage.id === "anuradhapura" && (
                   <a href="#duel" className="btn small primary duel-link">
                     ⚔ {t(PLACES_UI.watch)}

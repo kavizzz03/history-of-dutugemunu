@@ -96,6 +96,12 @@ export const PLACES_UI = {
   river: { en: "Mahaweli river", si: "මහවැලි ගඟ" } as L,
   city: { en: "Around Anuradhapura", si: "අනුරාධපුරය අවට" } as L,
   watch: { en: "Watch the duel ↓", si: "ද්වන්ද සටන නරඹන්න ↓" } as L,
+  brothers: {
+    en: "Watch the two hosts clash on the map — Gamani's crimson against Tissa's teal.",
+    si: "සිතියමේ සේනා දෙක ගැටෙන අයුරු බලන්න — ගැමුණුගේ රතු සහ තිස්සගේ නිල්-කොළ.",
+  } as L,
+  duelLabel: { en: "Duel of Kings", si: "රජුන්ගේ ද්වන්ද සටන" } as L,
+  duelGo: { en: "Watch the animation", si: "සජීවීකරණය නරඹන්න" } as L,
   zoomHint: {
     en: "Select stage 8 to see the sacred-city sites.",
     si: "පූජනීය නගරයේ ස්ථාන බැලීමට අදියර 8 තෝරන්න.",
