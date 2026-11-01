@@ -9,7 +9,9 @@ import { PLACES, PLACES_UI, RIVER_LABEL } from "@/lib/places";
 import { useMusic } from "@/lib/useMusic";
 import Reveal from "./Reveal";
 
-const Map3D = dynamic(() => import("./Map3D"), {
+// one automatic retry if the 3D chunk fails to download (flaky network)
+const loadMap = () => import("./Map3D");
+const Map3D = dynamic(() => loadMap().catch(() => new Promise<typeof import("./Map3D")>((r) => setTimeout(() => r(loadMap()), 1200))), {
   ssr: false,
   loading: () => <MapLoading />,
 });
@@ -33,6 +35,14 @@ export default function JourneyMap() {
   const [near, setNear] = useState(false); // mount the 3D scene once the section is close
   const [inView, setInView] = useState(false); // run the render loop only while on screen
   const stageRef = useRef<HTMLDivElement>(null);
+  const [epoch, setEpoch] = useState(0); // bump to rebuild the 3D scene from scratch
+  const [ready, setReady] = useState(false);
+  const [slow, setSlow] = useState(false); // show a manual "load the map" button if it takes too long
+  const rebuild = useCallback(() => {
+    setReady(false);
+    setSlow(false);
+    setEpoch((n) => n + 1);
+  }, []);
 
   useEffect(() => {
     const el = stageRef.current;
@@ -43,14 +53,22 @@ export default function JourneyMap() {
     }
     const io = new IntersectionObserver(
       ([e]) => {
-        if (e.isIntersecting) setNear(true);
+        // build the scene when the section is near, and let it go when it is far away (keeps only one heavy GL scene alive)
+        setNear(e.isIntersecting);
         setInView(e.isIntersecting);
+        if (!e.isIntersecting) setReady(false);
       },
-      { rootMargin: "150px 0px" }
+      { rootMargin: "500px 0px" }
     );
     io.observe(el);
     return () => io.disconnect();
   }, []);
+
+  useEffect(() => {
+    if (!near || ready) return;
+    const id = setTimeout(() => setSlow(true), 12000);
+    return () => clearTimeout(id);
+  }, [near, ready, epoch]);
 
   const go = useCallback((i: number) => {
     setActive(Math.max(-1, Math.min(STAGES.length - 1, i)));
@@ -83,7 +101,12 @@ export default function JourneyMap() {
 
       <div className="map-grid">
         <div className="map-stage" ref={stageRef}>
-          {near ? <Map3D active={active} lang={lang === "si" ? "si" : "en"} running={inView} onSelect={(i) => { setPlaying(false); go(i); }} /> : <MapLoading />}
+          {near ? <Map3D key={epoch} active={active} lang={lang === "si" ? "si" : "en"} running={inView} onReady={() => { setReady(true); setSlow(false); }} onLost={rebuild} onSelect={(i) => { setPlaying(false); go(i); }} /> : <MapLoading />}
+          {near && !ready && slow && (
+            <button className="map-reload btn primary" onClick={rebuild}>
+              ↻ {t(UI.map.reload)}
+            </button>
+          )}
           <div className="map-hint">{t(UI.map.hint)}</div>
           <div className="map-toolbar">
             <button className={`btn small ${active === -1 ? "primary" : "ghost"}`} onClick={() => { setPlaying(false); go(-1); }}>

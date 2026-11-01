@@ -486,3 +486,4 @@ html[data-lang="si"] .f-credit span { letter-spacing: 0.02em; text-transform: no
 .map-toolbar .music.on::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #ff6b57; animation: breathe 1.2s ease-in-out infinite; }
 .brothers-note { color: #ffb4a6; font-size: 14px; font-style: italic; }
 @media (max-width: 760px) { .map-toolbar { flex-wrap: wrap; justify-content: center; width: calc(100% - 24px); border-radius: 22px; } }
+.map-reload { position: absolute; left: 50%; top: 50%; transform: translate(-50%, 60px); z-index: 6; }
