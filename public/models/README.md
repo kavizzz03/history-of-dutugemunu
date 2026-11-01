@@ -8,3 +8,5 @@
 # Audio
 - `public/audio/gemunu-theme.mp3` — "Sanda Payanne Maharaja Gemunu" theme song, supplied by the site owner. Plays during the Duel of Kings.
   Make sure you have the right to publish this recording before the site goes public.
+- `public/audio/aloko-udapadi.mp3` — "Aloko Udapadi" song, supplied by the site owner. Plays while the 3D war-map journey plays.
+  As above, make sure you have the right to publish it.

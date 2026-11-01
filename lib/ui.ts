@@ -70,6 +70,9 @@ export const UI = {
     next: { en: "Next", si: "ඊළඟ" } as L,
     stage: { en: "Stage", si: "අදියර" } as L,
     of: { en: "of", si: "න්" } as L,
+    musicOn: { en: "Music on", si: "සංගීතය සක්‍රීය" } as L,
+    musicOff: { en: "Music off", si: "සංගීතය නැත" } as L,
+    musicTap: { en: "Tap for music", si: "සංගීතය සඳහා ස්පර්ශ කරන්න" } as L,
     hint: { en: "Drag · Scroll · Tap pins", si: "ඇදගන්න · ස්ක්‍රෝල් · සළකුණු ස්පර්ශ කරන්න" } as L,
     loading: { en: "Raising the island…", si: "දිවයින නැගෙමින්…" } as L,
     approx: {

@@ -64,7 +64,7 @@ export const STAGES: Stage[] = [
       si: "කාවන්තිස්ස රජුගේ අභාවයෙන් පසු ගැමුණු දකුණට පැමිණ තිස්ස කුමරු සමඟ සටන් කරයි — පළමු සටන පරාජයි, දෙවන සටන ජයයි. මව සහ භික්ෂූන් සාමය ගෙන එති.",
     },
     year: { en: "c. 164 BCE", si: "ක්‍රි.පූ. 164 පමණ" },
-    marchNode: 0, army: true, kind: "battle",
+    marchNode: 0, army: false, kind: "battle",
   },
   {
     id: "mahiyangana",

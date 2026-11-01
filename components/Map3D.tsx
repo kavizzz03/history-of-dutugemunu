@@ -1,17 +1,17 @@
 "use client";
 
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
-import { OrbitControls, Stars } from "@react-three/drei";
+import { OrbitControls, Sparkles, Stars } from "@react-three/drei";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { STAGES, MARCH_STAGE_IDS, project } from "@/lib/journey";
-import { MAHAWELI, PLACES, RIVER_LABEL } from "@/lib/places";
+import { MAHAWELI, PLACES, PLACES_UI, RIVER_LABEL } from "@/lib/places";
+import { Army, Boat, BrothersBattle, Compass, DuelMarker, SEA_Y, type Follow } from "./MapActors";
 import { OUTLINE_XZ, colorAt, elevation, heightAt, insidePoly, lonLat, LAND_TOP } from "@/lib/terrain";
 type Lang = "en" | "si";
 
 const BG = "#07131c";
 const PLACE_SYM: Record<string, string> = { gate: "⚔", tomb: "✦", stupa: "◉", tank: "≈" };
-const SEA_Y = 0.14;
 
 /* ───────── sea ───────── */
 function Sea() {
@@ -230,225 +230,6 @@ function RouteTubes({ curve, progress }: { curve: THREE.CatmullRomCurve3; progre
   );
 }
 
-const SOLDIERS = 32;
-
-function Kandula() {
-  const ivory = "#f6edd2";
-  return (
-    <group>
-      {/* body */}
-      <mesh position={[0, 0.3, 0]} scale={[0.2, 0.18, 0.32]}>
-        <sphereGeometry args={[1, 16, 12]} />
-        <meshStandardMaterial color="#6c6c78" roughness={0.9} />
-      </mesh>
-      {/* head */}
-      <mesh position={[0, 0.38, 0.3]}>
-        <sphereGeometry args={[0.13, 14, 10]} />
-        <meshStandardMaterial color="#6c6c78" roughness={0.9} />
-      </mesh>
-      {/* trunk */}
-      <mesh position={[0, 0.2, 0.45]} rotation={[0.35, 0, 0]}>
-        <cylinderGeometry args={[0.035, 0.055, 0.3, 8]} />
-        <meshStandardMaterial color="#6c6c78" roughness={0.9} />
-      </mesh>
-      {/* ears */}
-      {[-1, 1].map((s) => (
-        <mesh key={s} position={[s * 0.15, 0.4, 0.22]} scale={[0.03, 0.12, 0.1]}>
-          <sphereGeometry args={[1, 10, 8]} />
-          <meshStandardMaterial color="#82828e" />
-        </mesh>
-      ))}
-      {/* tusks */}
-      {[-1, 1].map((s) => (
-        <mesh key={s} position={[s * 0.07, 0.28, 0.42]} rotation={[Math.PI / 2 - 0.5, 0, s * 0.18]}>
-          <coneGeometry args={[0.022, 0.2, 8]} />
-          <meshStandardMaterial color={ivory} />
-        </mesh>
-      ))}
-      {/* legs */}
-      {[[-0.1, 0.18], [0.1, 0.18], [-0.1, -0.16], [0.1, -0.16]].map(([x, z], i) => (
-        <mesh key={i} position={[x, 0.09, z]}>
-          <cylinderGeometry args={[0.04, 0.045, 0.2, 8]} />
-          <meshStandardMaterial color="#5f5f6b" />
-        </mesh>
-      ))}
-      {/* caparison + forehead plate */}
-      <mesh position={[0, 0.46, -0.02]} scale={[0.24, 0.025, 0.3]}>
-        <boxGeometry args={[1, 1, 1]} />
-        <meshStandardMaterial color="#a51f2d" />
-      </mesh>
-      <mesh position={[0, 0.5, 0.34]} rotation={[0.6, 0, 0]}>
-        <planeGeometry args={[0.12, 0.1]} />
-        <meshStandardMaterial color="#f0b429" side={THREE.DoubleSide} emissive="#f0b429" emissiveIntensity={0.4} />
-      </mesh>
-      {/* the king */}
-      <mesh position={[0, 0.58, -0.02]}>
-        <coneGeometry args={[0.07, 0.16, 8]} />
-        <meshStandardMaterial color="#8f1d1d" />
-      </mesh>
-      <mesh position={[0, 0.7, -0.02]}>
-        <sphereGeometry args={[0.04, 10, 8]} />
-        <meshStandardMaterial color="#c68642" />
-      </mesh>
-      <mesh position={[0, 0.76, -0.02]}>
-        <coneGeometry args={[0.04, 0.05, 6]} />
-        <meshStandardMaterial color="#ffd34d" emissive="#ffd34d" emissiveIntensity={0.5} />
-      </mesh>
-      {/* relic spear */}
-      <mesh position={[0.08, 0.78, 0.0]}>
-        <cylinderGeometry args={[0.007, 0.007, 0.5, 6]} />
-        <meshStandardMaterial color="#5b3b24" />
-      </mesh>
-      <mesh position={[0.08, 1.06, 0.0]}>
-        <sphereGeometry args={[0.025, 8, 8]} />
-        <meshBasicMaterial color="#fff3b0" />
-      </mesh>
-    </group>
-  );
-}
-
-function Army({ curve, fracs, stageIdx, progress }: { curve: THREE.CatmullRomCurve3; fracs: number[]; stageIdx: number; progress: React.MutableRefObject<number> }) {
-  const group = useRef<THREE.Group>(null);
-  const bodies = useRef<THREE.InstancedMesh>(null);
-  const heads = useRef<THREE.InstancedMesh>(null);
-  const spears = useRef<THREE.InstancedMesh>(null);
-  const flags = useRef<THREE.Group>(null);
-  const dummy = useMemo(() => new THREE.Object3D(), []);
-  const form = useMemo(
-    () =>
-      Array.from({ length: SOLDIERS }, (_, i) => {
-        const row = Math.floor(i / 4), colI = i % 4;
-        return { x: (colI - 1.5) * 0.15 + (row % 2 ? 0.04 : -0.02), z: -0.62 - row * 0.17, ph: i * 0.9 };
-      }),
-    []
-  );
-  useLayoutEffect(() => {
-    const cols = ["#9c2a2a", "#c9a24a", "#e8e0c9", "#7a3b1d"];
-    if (bodies.current) form.forEach((_, i) => bodies.current!.setColorAt(i, new THREE.Color(cols[i % 4])));
-    if (bodies.current?.instanceColor) bodies.current.instanceColor.needsUpdate = true;
-  }, [form]);
-
-  const target = STAGES[stageIdx]?.army ? fracs[STAGES[stageIdx].marchNode] : fracs[0];
-  const tgt = useRef(target);
-  tgt.current = target;
-  const moving = useRef(false);
-  const tmpP = useMemo(() => new THREE.Vector3(), []);
-  const tmpT = useMemo(() => new THREE.Vector3(), []);
-
-  useFrame((s, dt) => {
-    const diff = tgt.current - progress.current;
-    moving.current = Math.abs(diff) > 0.003;
-    const maxStep = dt * 0.09;
-    progress.current += Math.sign(diff) * Math.min(Math.abs(diff), Math.max(maxStep, Math.abs(diff) * dt * 1.1));
-    const p = Math.min(0.999, Math.max(0.001, progress.current));
-    curve.getPointAt(p, tmpP);
-    curve.getTangentAt(p, tmpT);
-    const g = group.current;
-    if (!g) return;
-    g.position.copy(tmpP);
-    const yaw = Math.atan2(tmpT.x, tmpT.z);
-    g.rotation.y += (Math.atan2(Math.sin(yaw - g.rotation.y), Math.cos(yaw - g.rotation.y))) * Math.min(1, dt * 6);
-    const t = s.clock.elapsedTime;
-    const amp = moving.current ? 1 : 0.15;
-    g.position.y += Math.abs(Math.sin(t * 5)) * 0.025 * amp;
-    form.forEach((f, i) => {
-      const bob = Math.abs(Math.sin(t * 8 + f.ph)) * 0.035 * amp;
-      dummy.rotation.set(0, 0, 0);
-      dummy.position.set(f.x, 0.085 + bob, f.z);
-      dummy.scale.set(1, 1, 1);
-      dummy.updateMatrix();
-      bodies.current?.setMatrixAt(i, dummy.matrix);
-      dummy.position.set(f.x, 0.2 + bob, f.z);
-      dummy.updateMatrix();
-      heads.current?.setMatrixAt(i, dummy.matrix);
-      dummy.position.set(f.x + 0.06, 0.2 + bob, f.z);
-      dummy.rotation.set(0.08, 0, -0.06);
-      dummy.updateMatrix();
-      spears.current?.setMatrixAt(i, dummy.matrix);
-    });
-    [bodies, heads, spears].forEach((r) => r.current && (r.current.instanceMatrix.needsUpdate = true));
-    if (flags.current) flags.current.children.forEach((c, i) => (c.rotation.y = Math.sin(t * 3 + i) * 0.25));
-  });
-
-  const visible = STAGES[stageIdx]?.army ?? false;
-  return (
-    <group ref={group} visible={visible} scale={stageIdx === 7 ? 0.5 : 1.25}>
-      <Kandula />
-      <instancedMesh ref={bodies} args={[undefined, undefined, SOLDIERS]}>
-        <coneGeometry args={[0.058, 0.17, 7]} />
-        <meshStandardMaterial roughness={0.8} />
-      </instancedMesh>
-      <instancedMesh ref={heads} args={[undefined, undefined, SOLDIERS]}>
-        <sphereGeometry args={[0.036, 8, 6]} />
-        <meshStandardMaterial color="#c68642" />
-      </instancedMesh>
-      <instancedMesh ref={spears} args={[undefined, undefined, SOLDIERS]}>
-        <cylinderGeometry args={[0.006, 0.006, 0.36, 5]} />
-        <meshStandardMaterial color="#6b4a2a" />
-      </instancedMesh>
-      <group ref={flags}>
-        {[-0.3, 0.3].map((x, i) => (
-          <group key={i} position={[x, 0.45, -0.5 - i * 0.5]}>
-            <mesh position={[0, 0, 0]}>
-              <cylinderGeometry args={[0.008, 0.008, 0.9, 5]} />
-              <meshStandardMaterial color="#5b3b24" />
-            </mesh>
-            <mesh position={[0.1, 0.3, 0]}>
-              <planeGeometry args={[0.2, 0.14]} />
-              <meshStandardMaterial color="#a51f2d" side={THREE.DoubleSide} emissive="#a51f2d" emissiveIntensity={0.25} />
-            </mesh>
-            <mesh position={[0.1, 0.3, 0.002]}>
-              <circleGeometry args={[0.035, 12]} />
-              <meshBasicMaterial color="#ffd34d" side={THREE.DoubleSide} />
-            </mesh>
-          </group>
-        ))}
-      </group>
-    </group>
-  );
-}
-
-/* golden boat of Viharamahadevi, drifting on the sea */
-function Boat({ visible }: { visible: boolean }) {
-  const g = useRef<THREE.Group>(null);
-  const curve = useMemo(() => {
-    const ll: [number, number][] = [[79.84, 6.97], [79.62, 6.5], [79.66, 6.1], [80.0, 5.72], [80.6, 5.62], [81.1, 5.78], [81.4, 6.08], [81.38, 6.2]];
-    const pts = ll.map(([lo, la]) => {
-      const [x, z] = project(lo, la);
-      return new THREE.Vector3(x, SEA_Y + 0.02, z);
-    });
-    return new THREE.CatmullRomCurve3(pts, false, "centripetal");
-  }, []);
-  const p = useMemo(() => new THREE.Vector3(), []);
-  const tg = useMemo(() => new THREE.Vector3(), []);
-  useFrame((s) => {
-    if (!g.current) return;
-    const u = (s.clock.elapsedTime * 0.04) % 1;
-    curve.getPointAt(u, p);
-    curve.getTangentAt(u, tg);
-    g.current.position.set(p.x, p.y + Math.sin(s.clock.elapsedTime * 2) * 0.02, p.z);
-    g.current.rotation.y = Math.atan2(tg.x, tg.z);
-    g.current.rotation.z = Math.sin(s.clock.elapsedTime * 1.6) * 0.08;
-  });
-  return (
-    <group ref={g} visible={visible} scale={1.4}>
-      <mesh scale={[0.1, 0.07, 0.24]} rotation={[0, 0, 0]} position={[0, 0.03, 0]}>
-        <sphereGeometry args={[1, 14, 10, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2]} />
-        <meshStandardMaterial color="#f0b429" metalness={0.6} roughness={0.3} side={THREE.DoubleSide} emissive="#a86a00" emissiveIntensity={0.5} />
-      </mesh>
-      <mesh position={[0, 0.1, 0]}>
-        <coneGeometry args={[0.035, 0.1, 8]} />
-        <meshStandardMaterial color="#c2417a" />
-      </mesh>
-      <mesh position={[0, 0.17, 0]}>
-        <sphereGeometry args={[0.025, 8, 8]} />
-        <meshStandardMaterial color="#c68642" />
-      </mesh>
-      <pointLight position={[0, 0.25, 0]} color="#ffcf66" intensity={1.2} distance={2} />
-    </group>
-  );
-}
-
 /* sacred city */
 function Anuradhapura() {
   const [x, z] = project(80.4037, 8.3114);
@@ -547,6 +328,11 @@ function Marker({ i, active, lang, onSelect }: { i: number; active: boolean; lan
         <octahedronGeometry args={[active ? 0.12 : 0.085, 0]} />
         <meshBasicMaterial color={color} />
       </mesh>
+      <mesh position={[0, 1.3, 0]} visible={active}>
+        <cylinderGeometry args={[0.02, 0.14, 2.6, 14, 1, true]} />
+        <meshBasicMaterial color={color} transparent opacity={0.2} depthWrite={false} blending={THREE.AdditiveBlending} side={THREE.DoubleSide} />
+      </mesh>
+      {active && <Sparkles count={16} scale={[0.7, 1.4, 0.7]} position={[0, 0.8, 0]} size={3} speed={0.6} color={color} opacity={0.9} />}
       <mesh ref={ring} rotation-x={-Math.PI / 2} position={[0, 0.02, 0]}>
         <ringGeometry args={[0.18, 0.24, 28]} />
         <meshBasicMaterial color={color} transparent opacity={0.4} depthWrite={false} />
@@ -581,6 +367,7 @@ function LabelProjector({
     const [cx, cz] = project(80.4037, 8.3114);
     const cy = heightAt(cx, cz);
     PLACES.forEach((p) => out.push(new THREE.Vector3(cx + p.off[0], cy + (p.id === "ruwanwelisaya" ? 0.62 : 0.3), cz + p.off[1])));
+    out.push(new THREE.Vector3(cx, cy + 0.78, cz + 1.0)); // the "watch the duel" link
     return out;
   }, []);
   const place = (el: HTMLDivElement | null, a: THREE.Vector3, camera: THREE.Camera, w: number, h: number, hide = false) => {
@@ -599,11 +386,14 @@ function LabelProjector({
   return null;
 }
 
-/* ───────── camera ───────── */
-function CameraRig({ active, aspect }: { active: number; aspect: number }) {
+/* ───────── camera: a smooth tracking shot while the ship sails or the army marches, otherwise a settled shot of the stage ───────── */
+function CameraRig({ active, aspect, follow, focus }: { active: number; aspect: number; follow: Follow; focus: React.MutableRefObject<THREE.Vector3> }) {
   const t = useRef(1);
+  const prev = useRef(0);
   const controls = useThree((s) => s.controls) as unknown as { target: THREE.Vector3; update: () => void } | null;
   const camera = useThree((s) => s.camera);
+  const tGoal = useMemo(() => new THREE.Vector3(), []);
+  const pGoal = useMemo(() => new THREE.Vector3(), []);
   const goal = useMemo(() => {
     if (active < 0) {
       const k = aspect < 1.1 ? 1.35 : 1;
@@ -616,18 +406,36 @@ function CameraRig({ active, aspect }: { active: number; aspect: number }) {
     const k = aspect < 1.1 ? 1.5 : 1;
     // lean in on the sacred city from a steeper angle so the army column doesn't hide it
     if (city) return { target: new THREE.Vector3(x, y, z + 0.1), pos: new THREE.Vector3(x, y + 2.8 * k, z + 1.5 * k) };
+    if (s.id === "kulanganiya") return { target: new THREE.Vector3(x, y + 0.2, z), pos: new THREE.Vector3(x, y + 3.4 * k, z + 4.3 * k) };
     return { target: new THREE.Vector3(x, y, z), pos: new THREE.Vector3(x, y + 5.2 * k, z + 6.4 * k) };
   }, [active, aspect]);
   useEffect(() => {
     t.current = 1;
   }, [goal]);
-  useFrame((_, dt) => {
+  useFrame((_, dtRaw) => {
     if (!controls) return;
-    if (t.current > 0) {
-      const k = 1 - Math.exp(-dt * 3.2);
-      controls.target.lerp(goal.target, k);
-      camera.position.lerp(goal.pos, k);
-      t.current -= dt / 2.4;
+    const dt = Math.min(dtRaw, 0.05);
+    const mode = follow.current.mode;
+    follow.current.mode = 0; // the ship / army set it again next frame while they move
+    if (mode !== prev.current) {
+      t.current = 1;
+      prev.current = mode;
+    }
+    const k = aspect < 1.1 ? 1.4 : 1;
+    if (mode) {
+      const f = focus.current;
+      tGoal.copy(f);
+      if (mode === 1) pGoal.set(f.x + 0.5 * k, f.y + 1.7 * k, f.z + 2.5 * k);
+      else pGoal.set(f.x, f.y + 3.4 * k, f.z + 4.6 * k);
+      const e = 1 - Math.exp(-dt * 2.0);
+      controls.target.lerp(tGoal, e);
+      camera.position.lerp(pGoal, e);
+      t.current = 1;
+    } else if (t.current > 0) {
+      const e = 1 - Math.exp(-dt * 2.4);
+      controls.target.lerp(goal.target, e);
+      camera.position.lerp(goal.pos, e);
+      t.current -= dt / 3.2;
     }
     controls.update();
   });
@@ -637,7 +445,10 @@ function CameraRig({ active, aspect }: { active: number; aspect: number }) {
 function Scene({ active, lang, onSelect, labels, extra, showCity }: { active: number; lang: Lang; onSelect: (i: number) => void; labels: React.MutableRefObject<(HTMLDivElement | null)[]>; extra: React.MutableRefObject<(HTMLDivElement | null)[]>; showCity: React.MutableRefObject<boolean> }) {
   const { curve, fracs } = useRoute();
   const progress = useRef(0);
+  const follow = useRef<{ mode: 0 | 1 | 2 }>({ mode: 0 });
+  const focus = useRef(new THREE.Vector3());
   const size = useThree((s) => s.size);
+  const openDuel = () => document.getElementById("duel")?.scrollIntoView({ behavior: "smooth" });
   const activeKey = active >= 0 ? `${STAGES[active].lat},${STAGES[active].lon}` : "";
   return (
     <>
@@ -653,15 +464,18 @@ function Scene({ active, lang, onSelect, labels, extra, showCity }: { active: nu
       <River />
       <RouteTubes curve={curve} progress={progress} />
       <Anuradhapura />
-      <Boat visible={active <= 1} />
-      <Army curve={curve} fracs={fracs} stageIdx={active < 0 ? 1 : active} progress={progress} />
+      <Compass />
+      <Boat active={active} follow={follow} focus={focus} />
+      <Army curve={curve} fracs={fracs} stageIdx={active < 0 ? 1 : active} progress={progress} follow={follow} focus={focus} />
+      <BrothersBattle active={active === 3} />
+      <DuelMarker onOpen={openDuel} />
       {STAGES.map((s, i) => {
         if (i === 8) return null; // same place as stage 7
         const isActive = activeKey === `${s.lat},${s.lon}`;
         return <Marker key={s.id} i={i} active={isActive} lang={lang} onSelect={onSelect} />;
       })}
       <OrbitControls makeDefault enableDamping dampingFactor={0.08} minDistance={3} maxDistance={42} maxPolarAngle={1.32} enablePan={false} />
-      <CameraRig active={active} aspect={size.width / size.height} />
+      <CameraRig active={active} aspect={size.width / size.height} follow={follow} focus={focus} />
       <LabelProjector labels={labels} extra={extra} showCity={showCity} />
     </>
   );
@@ -701,6 +515,13 @@ export default function Map3D({ active, lang, onSelect, running = true }: { acti
             <span className="map-label-num">≈</span>
             <span>{RIVER_LABEL.name[lang]}</span>
           </div>
+        </div>
+        <div className="map-label-anchor" ref={(el) => { extra.current[PLACES.length + 1] = el; }}>
+          <a className="map-label duel" href="#duel">
+            <span className="map-label-num">⚔</span>
+            <span>{PLACES_UI.duelLabel[lang]}</span>
+            <b>{PLACES_UI.duelGo[lang]} →</b>
+          </a>
         </div>
         {PLACES.map((p, j) => (
           <div key={p.id} className="map-label-anchor" ref={(el) => { extra.current[j + 1] = el; }}>

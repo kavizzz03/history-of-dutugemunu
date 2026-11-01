@@ -473,3 +473,16 @@ html[data-lang="si"] .f-credit span { letter-spacing: 0.02em; text-transform: no
 .footer { padding-top: clamp(96px, 11vw, 130px); }
 .duel-controls .music.on { border-color: var(--gold2); color: var(--gold2); box-shadow: 0 0 16px rgba(227, 176, 75, 0.25); }
 .duel-controls .music.on::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #ff6b57; animation: breathe 1.2s ease-in-out infinite; }
+
+/* map: creative touches */
+.map-stage::before, .map-stage::after { content: ""; position: absolute; z-index: 3; width: 56px; height: 56px; pointer-events: none; border: 2px solid var(--gold); opacity: 0.8; }
+.map-stage::before { left: 10px; top: 10px; border-right: 0; border-bottom: 0; border-radius: 18px 0 0 0; }
+.map-stage::after { right: 10px; bottom: 10px; border-left: 0; border-top: 0; border-radius: 0 0 18px 0; }
+.map-label.duel { pointer-events: auto; cursor: pointer; flex-wrap: wrap; max-width: 210px; background: linear-gradient(135deg, rgba(120, 20, 20, 0.95), rgba(60, 10, 10, 0.95)); border-color: #ff8d7a; color: #fff1d4; box-shadow: 0 0 24px rgba(255, 107, 87, 0.55); animation: pulseGlow 2.4s ease-in-out infinite; }
+.map-label.duel b { flex-basis: 100%; font-size: 11px; font-weight: 600; color: #ffd98a; padding-left: 24px; }
+.map-label.duel:hover { transform: scale(1.06); }
+@keyframes pulseGlow { 50% { box-shadow: 0 0 36px rgba(255, 107, 87, 0.9); } }
+.map-toolbar .music.on { border-color: var(--gold2); color: var(--gold2); }
+.map-toolbar .music.on::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #ff6b57; animation: breathe 1.2s ease-in-out infinite; }
+.brothers-note { color: #ffb4a6; font-size: 14px; font-style: italic; }
+@media (max-width: 760px) { .map-toolbar { flex-wrap: wrap; justify-content: center; width: calc(100% - 24px); border-radius: 22px; } }
