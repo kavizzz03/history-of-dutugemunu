@@ -10,3 +10,5 @@
   Make sure you have the right to publish this recording before the site goes public.
 - `public/audio/aloko-udapadi.mp3` — "Aloko Udapadi" song, supplied by the site owner. Plays while the 3D war-map journey plays.
   As above, make sure you have the right to publish it.
+
+Project ownership: all original work in this project belongs to Kavindu Bogahawatte (see ../../LICENSE). The items above are third-party and excluded from that.

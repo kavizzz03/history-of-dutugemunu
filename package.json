@@ -1,6 +1,9 @@
 {
   "name": "dutugemunu",
   "version": "1.0.0",
+  "description": "Dutugemunu — an interactive bilingual (English/Sinhala) retelling of the Mahavamsa with a 3D war map, animated duel and 3D hall of heroes.",
+  "author": "Kavindu Bogahawatte",
+  "license": "UNLICENSED",
   "private": true,
   "scripts": {
     "dev": "next dev",
