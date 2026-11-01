@@ -1,0 +1,145 @@
+import type { L } from "./i18n";
+
+export const UI = {
+  brand: { en: "Dutugemunu", si: "දුටුගැමුණු" } as L,
+  nav: {
+    story: { en: "Story", si: "කතාව" } as L,
+    heroes: { en: "Heroes", si: "වීරයෝ" } as L,
+    map: { en: "3D War Map", si: "ත්‍රිමාණ යුද සිතියම" } as L,
+    duel: { en: "Duel of Kings", si: "ද්වන්ද සටන" } as L,
+    works: { en: "Great Works", si: "මහා කෘති" } as L,
+  },
+  hero: {
+    eyebrow: { en: "Mahavamsa · 161 BCE", si: "මහාවංසය · ක්‍රි.පූ. 161" } as L,
+    title: { en: "Dutugemunu", si: "දුටුගැමුණු" } as L,
+    altTitle: { en: "දුටුගැමුණු", si: "Dutugemunu" } as L,
+    subtitle: {
+      en: "The Impetuous Prince who United an Island",
+      si: "දිවයින එක් කළ නොඉවසිලිවන්ත කුමාරයා",
+    } as L,
+    body: {
+      en: "From a golden boat on the western sea to the duel at the gates of Anuradhapura — walk the legend of Sri Lanka's greatest king with his ten giants, his war elephant Kandula, and the rival he honoured in victory.",
+      si: "බටහිර මුහුදේ රන් බෝට්ටුවේ සිට අනුරාධපුර දොරටුවේ ද්වන්ද සටන දක්වා — ශ්‍රී ලංකාවේ මහා රජුගේ ජනශ්‍රැතිය, ඔහුගේ දස මහා යෝධයින්, යුද ඇතා කණ්ඩුල සහ ජයෙන් පසුවත් ගෞරව කළ ප්‍රතිවාදියා සමඟ ගමන් කරන්න.",
+    } as L,
+    cta1: { en: "Begin the story", si: "කතාව ආරම්භ කරන්න" } as L,
+    cta2: { en: "Explore the 3D war map", si: "ත්‍රිමාණ යුද සිතියම බලන්න" } as L,
+    scroll: { en: "Scroll", si: "පහළට" } as L,
+    stats: [
+      { n: "161", l: { en: "BCE · Unification", si: "ක්‍රි.පූ. · එක්සත් කිරීම" } as L },
+      { n: "10", l: { en: "Giant warriors", si: "මහා යෝධයෝ" } as L },
+      { n: "24", l: { en: "Years of rule", si: "රාජ්‍ය වර්ෂ" } as L },
+    ],
+  },
+  story: {
+    kicker: { en: "The Chronicle", si: "වංශකතාව" } as L,
+    title: { en: "Five chapters of a king's life", si: "රජෙකුගේ ජීවිතයේ පරිච්ඡේද පහ" } as L,
+    sub: {
+      en: "Following the Mahavamsa, from prophecy to legacy.",
+      si: "මහාවංසයට අනුව — නිමිත්තේ සිට උරුමය දක්වා.",
+    } as L,
+    chapter: { en: "Chapter", si: "පරිච්ඡේදය" } as L,
+  },
+  heroes: {
+    kicker: { en: "The Cast", si: "චරිත" } as L,
+    title: { en: "Kings, queens, giants & a legendary tusker", si: "රජවරු, බිසවුන්, යෝධයෝ සහ ජනප්‍රවාදගත ඇතා" } as L,
+    sub: {
+      en: "Tap any portrait to read their story.",
+      si: "කතාව කියවීමට ඕනෑම රූපයක් ස්පර්ශ කරන්න.",
+    } as L,
+    close: { en: "Close", si: "වසන්න" } as L,
+    prev: { en: "Previous", si: "පෙර" } as L,
+    next: { en: "Next", si: "ඊළඟ" } as L,
+    meter: { en: "Legend meter", si: "වීර මාපකය" } as L,
+    meterNote: {
+      en: "Illustrative ratings for fun — not from the chronicle.",
+      si: "විනෝදය සඳහා නිදර්ශන ඇගයීම් පමණි — වංශකතාවෙන් නොවේ.",
+    } as L,
+    read: { en: "Read story", si: "කතාව කියවන්න" } as L,
+  },
+  map: {
+    kicker: { en: "The War Journey", si: "යුද ගමන" } as L,
+    title: { en: "Follow the army across Sri Lanka", si: "ශ්‍රී ලංකාව හරහා සේනාව අනුගමනය කරන්න" } as L,
+    sub: {
+      en: "A 3D map of the island. Drag to rotate, scroll to zoom, tap a pin — or press play and watch King Dutugemunu and Kandula march north.",
+      si: "දිවයිනේ ත්‍රිමාණ සිතියම. කරකවන්න, විශාල කරන්න, සළකුණක් ස්පර්ශ කරන්න — නැතහොත් play ඔබා දුටුගැමුණු රජු සහ කණ්ඩුල උතුරට ගමන් කිරීම නරඹන්න.",
+    } as L,
+    overview: { en: "Whole island", si: "මුළු දිවයින" } as L,
+    play: { en: "Play journey", si: "ගමන ආරම්භ" } as L,
+    pause: { en: "Pause", si: "නවත්වන්න" } as L,
+    prev: { en: "Prev", si: "පෙර" } as L,
+    next: { en: "Next", si: "ඊළඟ" } as L,
+    stage: { en: "Stage", si: "අදියර" } as L,
+    of: { en: "of", si: "න්" } as L,
+    hint: { en: "Drag · Scroll · Tap pins", si: "ඇදගන්න · ස්ක්‍රෝල් · සළකුණු ස්පර්ශ කරන්න" } as L,
+    loading: { en: "Raising the island…", si: "දිවයින නැගෙමින්…" } as L,
+    approx: {
+      en: "Site locations are approximate — scholars still debate where places like Vijithapura and Ambatthakola stood.",
+      si: "ස්ථාන ආසන්න වශයෙන් පමණි — විජිතපුරය, අම්බට්ඨකොල වැනි ස්ථාන කොහිදැයි විද්වතුන් තවමත් විවාද කරයි.",
+    } as L,
+    legend: {
+      origin: { en: "Origin tale", si: "මුල් කතාව" } as L,
+      base: { en: "Royal base", si: "රාජකීය කඳවුර" } as L,
+      exile: { en: "Exile", si: "පලා යාම" } as L,
+      battle: { en: "Battle", si: "සටන" } as L,
+      siege: { en: "Great siege", si: "මහා වටලෑම" } as L,
+      capital: { en: "Capital", si: "අගනුවර" } as L,
+    },
+  },
+  works: {
+    kicker: { en: "The Builder King", si: "ගොඩනැගීමේ රජතුමා" } as L,
+    title: { en: "Monuments born of remorse", si: "පසුතැවිල්ලෙන් උපන් ස්මාරක" } as L,
+    sub: {
+      en: "The conqueror laid down his spear and picked up the builder's plumb-line.",
+      si: "ජයග්‍රාහකයා හෙල්ලය තබා ගොඩනැගීමේ උපකරණ අතට ගත්තේය.",
+    } as L,
+    honourTitle: { en: "Honour for a fallen enemy", si: "වැටුණු සතුරාට ගෞරවය" } as L,
+    honour: {
+      en: "Dutugemunu cremated King Elara with full royal honours and raised a monument over the spot. For centuries afterwards, every traveller — even kings — dismounted and silenced their drums when passing it.",
+      si: "දුටුගැමුණු රජු එළාර රජුට සම්පූර්ණ රාජකීය ගෞරව සහිතව අවමංගල්‍ය පැවැත්වූ අතර, එම ස්ථානයේ ස්මාරකයක් ඉදි කළේය. ශතවර්ෂ ගණනාවක් පුරා එම ස්ථානය පසු කරන සැමදෙනාම — රජවරුන් පවා — වාහනවලින් බැස වාද්‍ය නවත්වා ගියහ.",
+    } as L,
+  },
+  footer: {
+    line: {
+      en: "Illustrations are original artwork. Story follows the Mahavamsa; some details come from later tradition, and place locations are approximate.",
+      si: "රූප සියල්ල මුල් නිර්මාණ වේ. කතාව මහාවංසයට අනුව; සමහර විස්තර පසුකාලීන ජනශ්‍රැතියෙන් ලැබූ ඒවා වන අතර ස්ථාන ආසන්න වශයෙන් පමණි.",
+    } as L,
+    made: { en: "Made with Next.js · three.js", si: "Next.js · three.js වලින් නිමවන ලදී" } as L,
+    blurb: {
+      en: "An interactive retelling of the Mahavamsa — the life of Sri Lanka's greatest king, his ten giants and the tusker Kandula, in English and Sinhala.",
+      si: "මහාවංසය ඇසුරින් ශ්‍රී ලංකාවේ මහා රජුගේ ජීවිතය, ඔහුගේ දස මහා යෝධයින් සහ කණ්ඩුල ඇතා පිළිබඳ — ඉංග්‍රීසි සහ සිංහල භාෂාවෙන් — අන්තර්ක්‍රියාකාරී ප්‍රතිකථනයක්.",
+    } as L,
+    explore: { en: "Explore", si: "ගවේෂණය" } as L,
+    about: { en: "About the project", si: "ව්‍යාපෘතිය ගැන" } as L,
+    lang: { en: "Language", si: "භාෂාව" } as L,
+    top: { en: "Back to top", si: "ඉහළට" } as L,
+    credit: { en: "Designed & developed by", si: "Designed & developed by" } as L,
+    author: { en: "Kavindu Bogahawatte", si: "Kavindu Bogahawatte" } as L,
+    rights: { en: "All rights reserved.", si: "සියලු හිමිකම් ඇවිරිණි." } as L,
+    facts: [
+      { en: "Source: the Mahavamsa chronicle", si: "මූලාශ්‍රය: මහාවංසය" } as L,
+      { en: "Era: 161 BCE – Anuradhapura Kingdom", si: "යුගය: ක්‍රි.පූ. 161 – අනුරාධපුර රාජධානිය" } as L,
+      { en: "Languages: English · සිංහල", si: "භාෂා: English · සිංහල" } as L,
+      { en: "3D: interactive war map, hall of heroes", si: "ත්‍රිමාණ: යුද සිතියම, වීරයන්ගේ මණ්ඩපය" } as L,
+    ],
+  },
+  ribbon: [
+    { en: "Mahavamsa", si: "මහාවංසය" } as L,
+    { en: "Anuradhapura", si: "අනුරාධපුරය" } as L,
+    { en: "Ruhuna", si: "රුහුණ" } as L,
+    { en: "Kandula", si: "කණ්ඩුල" } as L,
+    { en: "Ten Giants", si: "දස මහා යෝධයෝ" } as L,
+    { en: "King Elara", si: "එළාර රජු" } as L,
+    { en: "Ruwanwelisaya", si: "රුවන්වැලිසෑය" } as L,
+    { en: "161 BCE", si: "ක්‍රි.පූ. 161" } as L,
+  ],
+  legacy: {
+    kicker: { en: "The Legacy", si: "උරුමය" } as L,
+    title: { en: "One island, one story", si: "එක් දිවයිනක්, එක් කතාවක්" } as L,
+    body: {
+      en: "From a prince who could not sleep stretched out, to a king who bowed to a fallen rival — the story of Dutugemunu is still told wherever the island's people gather.",
+      si: "දෙපා දිගු කර නිදාගත නොහැකි වූ කුමාරයෙකුගේ සිට වැටුණු ප්‍රතිවාදියාට නමස්කාර කළ රජෙකු දක්වා — දුටුගැමුණුගේ කතාව අදත් දිවයිනේ ජනතාව රැස්වන සෑම තැනකම කියවේ.",
+    } as L,
+    a: { en: "Meet the heroes again", si: "වීරයන් නැවත බලන්න" } as L,
+    b: { en: "Watch the duel", si: "ද්වන්ද සටන නරඹන්න" } as L,
+  },
+};
