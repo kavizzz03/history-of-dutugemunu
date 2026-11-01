@@ -34,6 +34,7 @@
    - [8.8 Background music](#88-background-music)
    - [8.9 Navigation, footer and styling](#89-navigation-footer-and-styling)
    - [8.10 Performance and GPU management](#810-performance-and-gpu-management)
+   - [8.11 SEO, icons and social sharing](#811-seo-icons-and-social-sharing)
 9. [Customising the project](#9-customising-the-project)
 10. [Deploying to Vercel](#10-deploying-to-vercel)
 11. [Troubleshooting](#11-troubleshooting)
@@ -127,7 +128,10 @@ Scripts: `dev` → `next dev`, `build` → `next build`, `start` → `next start
 ```
 dutugemunu/
 ├─ app/
-│  ├─ layout.tsx          # <html>, metadata, font imports
+│  ├─ layout.tsx          # <html>, SEO metadata, JSON-LD, font imports
+│  ├─ icon.svg · favicon.ico · apple-icon.png   # site icons
+│  ├─ opengraph-image.png · twitter-image.png   # social share images
+│  ├─ manifest.ts · robots.ts · sitemap.ts      # web manifest, robots.txt, sitemap.xml
 │  ├─ page.tsx            # page order (Nav → Hero → … → Footer)
 │  └─ globals.css         # every style: theme variables, sections, 3D UI, footer
 ├─ components/
@@ -161,6 +165,7 @@ dutugemunu/
 │  ├─ stage.ts            # Hall of Heroes strings
 │  ├─ terrain.ts          # elevation, colours, land test from the island outline
 │  ├─ lk-outline.json     # simplified Sri Lanka coastline
+│  ├─ site.ts             # site URL and SEO text (name, description, keywords)
 │  └─ useMusic.ts         # background-music hook (fade, browser-autoplay handling)
 ├─ public/
 │  ├─ models/xbot.glb     # animated human skeleton (see credits)
@@ -282,6 +287,14 @@ Three heavy 3D scenes exist (hall, map, modal viewer). To keep the site smooth a
 - Soldiers are drawn with **instanced meshes** (8 draw calls for the whole army).
 - Pixel ratio is capped (`dpr` ≤ 1.6–1.75).
 
+### 8.11 SEO, icons and social sharing
+- **Site icon:** `app/icon.svg` (gold dagoba on a dark rounded tile), `app/favicon.ico`, `app/apple-icon.png` (iPhone home screen) and `public/icons/icon-192.png` / `icon-512.png` (installable web app). Next.js adds the `<link>` tags automatically.
+- **Page metadata** (`app/layout.tsx` + `lib/site.ts`): title and title template, description, keywords (English and Sinhala: Dutugemunu, දුටුගැමුණු, Mahavamsa, Elara, Kandula, Anuradhapura…), author / creator / publisher (Kavindu Bogahawatte), canonical URL, robots rules, theme colour.
+- **Social cards:** Open Graph and Twitter/X `summary_large_image` tags with a branded 1200×630 share image (`app/opengraph-image.png`, `app/twitter-image.png`) and alt text — links to the site look good on WhatsApp, Facebook, Telegram, LinkedIn and X.
+- **Structured data:** JSON-LD (`WebSite`, `Person`, `CreativeWork`) tells search engines the site is bilingual (`en`, `si`), who made it and what it is about.
+- **Crawling:** `app/robots.ts` → `/robots.txt`, `app/sitemap.ts` → `/sitemap.xml`, `app/manifest.ts` → `/manifest.webmanifest`.
+- **Site address:** on Vercel the production domain is detected automatically. If you add a custom domain, set the environment variable `NEXT_PUBLIC_SITE_URL=https://your-domain.com` in the Vercel project settings, so canonical links, the sitemap and share images use it. After deploying, submit `/sitemap.xml` in Google Search Console.
+
 ## 9. Customising the project
 
 | I want to… | Edit |
@@ -295,6 +308,7 @@ Three heavy 3D scenes exist (hall, map, modal viewer). To keep the site smooth a
 | Change the duel timing | beats in `lib/duel.ts` and timing constants at the top of `components/Duel.tsx` |
 | Replace a song | overwrite the file in `public/audio/` (keep the file name or update the path in `Duel.tsx` / `JourneyMap.tsx`) |
 | Re-colour the site | CSS variables at the top of `app/globals.css` |
+| Change SEO title, description, keywords | `lib/site.ts` |
 | Change the footer credit | `footer` block in `lib/ui.ts` |
 | Reorder sections | `app/page.tsx` (numbers update by themselves) |
 
