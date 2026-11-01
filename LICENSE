@@ -1,0 +1,39 @@
+Copyright (c) 2026 Kavindu Bogahawatte. All Rights Reserved.
+
+PROPRIETARY LICENSE
+
+This project — "Dutugemunu: The Impetuous Prince who United an Island" — including
+its concept, idea, visual design, layout, user-interface design, 3D scenes and map,
+animations, character artwork and avatars, bilingual (English / Sinhala) text
+arrangement, and all source code written for it (together, the "Work"), was
+conceived, designed and developed by Kavindu Bogahawatte ("the Owner").
+
+OWNERSHIP
+All right, title and interest in and to the Work belong solely to the Owner.
+
+RESTRICTIONS
+No part of the Work may be copied, modified, merged, published, distributed,
+sublicensed, sold, hosted for others, or used to create derivative works, in whole
+or in part, without the prior written permission of the Owner. Viewing the
+published website is permitted; any other use requires a written licence from
+the Owner.
+
+THIRD-PARTY MATERIAL
+This licence covers only the Owner's own work. The following are NOT owned by the
+Owner and remain under their own licences and rights (see README.md, "Credits and
+third-party notices"):
+  - open-source libraries (Next.js, React, three.js, React Three Fiber, drei,
+    Fontsource fonts) — under their respective licences;
+  - the "X Bot" skeleton model (public/models/xbot.glb), from the three.js
+    examples / Adobe Mixamo — subject to its own terms;
+  - the audio recordings in public/audio/ — they belong to their respective
+    artists and rights holders and are used only with the permission the Owner has
+    obtained for them;
+  - the historical story of the Mahavamsa, which is an ancient public chronicle.
+
+NO WARRANTY
+THE WORK IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED.
+IN NO EVENT SHALL THE OWNER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY
+ARISING FROM THE USE OF THE WORK.
+
+Contact the Owner, Kavindu Bogahawatte, for licensing enquiries.
