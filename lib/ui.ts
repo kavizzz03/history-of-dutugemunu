@@ -70,6 +70,7 @@ export const UI = {
     next: { en: "Next", si: "ඊළඟ" } as L,
     stage: { en: "Stage", si: "අදියර" } as L,
     of: { en: "of", si: "න්" } as L,
+    reload: { en: "Tap to load the map", si: "සිතියම පූරණයට ස්පර්ශ කරන්න" } as L,
     musicOn: { en: "Music on", si: "සංගීතය සක්‍රීය" } as L,
     musicOff: { en: "Music off", si: "සංගීතය නැත" } as L,
     musicTap: { en: "Tap for music", si: "සංගීතය සඳහා ස්පර්ශ කරන්න" } as L,

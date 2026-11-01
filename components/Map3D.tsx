@@ -481,7 +481,7 @@ function Scene({ active, lang, onSelect, labels, extra, showCity }: { active: nu
   );
 }
 
-export default function Map3D({ active, lang, onSelect, running = true }: { active: number; lang: Lang; onSelect: (i: number) => void; running?: boolean }) {
+export default function Map3D({ active, lang, onSelect, running = true, onReady, onLost }: { active: number; lang: Lang; onSelect: (i: number) => void; running?: boolean; onReady?: () => void; onLost?: () => void }) {
   const [ready, setReady] = useState(false);
   const labels = useRef<(HTMLDivElement | null)[]>([]);
   const extra = useRef<(HTMLDivElement | null)[]>([]);
@@ -494,8 +494,16 @@ export default function Map3D({ active, lang, onSelect, running = true }: { acti
         camera={{ position: [0, 25, 12], fov: 42, near: 0.1, far: 200 }}
         dpr={[1, 1.75]}
         frameloop={running ? "always" : "never"}
-        gl={{ antialias: true, preserveDrawingBuffer: true }}
-        onCreated={() => setReady(true)}
+        gl={{ antialias: true, powerPreference: "high-performance" }}
+        onCreated={({ gl }) => {
+          setReady(true);
+          onReady?.();
+          // if the browser drops the GL context (GPU busy, tab suspended…) ask the parent to rebuild the map
+          gl.domElement.addEventListener("webglcontextlost", (e) => {
+            e.preventDefault();
+            onLost?.();
+          });
+        }}
       >
         <Scene active={active} lang={lang} onSelect={onSelect} labels={labels} extra={extra} showCity={showCity} />
       </Canvas>

@@ -29,7 +29,7 @@ export default function Heroes() {
       setNear(true);
       return;
     }
-    const io = new IntersectionObserver(([e]) => e.isIntersecting && setNear(true), { rootMargin: "300px 0px" });
+    const io = new IntersectionObserver(([e]) => setNear(e.isIntersecting), { rootMargin: "500px 0px" }); // also tears the hall down when far away, freeing the GPU for the map
     io.observe(el);
     return () => io.disconnect();
   }, []);
